@@ -32,27 +32,51 @@ class hamster(basetap):
         self.proxy = proxy
         self.headers = headers
         self.stopped = False
-        self.wait_time = 5
+        self.wait_time = 20
         self.name = self.__class__.__name__
         self.last_remain = 1
 
     def parse_config(self, cline):
         self.update_header("authorization", cline["authorization"])
 
+    def get_balance_info(self):
+        url = "https://api.hamsterkombat.io/clicker/sync"
+        data = self.post_data(url, None)
+        if "clickerUser" in data:
+            self.last_remain = data["clickerUser"]["availableTaps"]
+
+    def boost_if_ok(self):
+        url = "https://api.hamsterkombat.io/clicker/boosts-for-buy"
+        data = self.post_data(url, None)
+        if "boostsForBuy" in data and len(data["boostsForBuy"]) >= 3:
+            boostfulltap = data["boostsForBuy"][2]
+            self.bprint(f"Available boost in: {boostfulltap['cooldownSeconds']} seconds")
+            if int(boostfulltap["cooldownSeconds"]) == 0:
+                url = "https://api.hamsterkombat.io/clicker/buy-boost"
+                payload = {
+                    "boostId" : "BoostFullAvailableTaps",
+                    "timestamp" : int(datetime.datetime.now().timestamp())
+                }
+                data = self.post_data(url, payload)
+                if "clickerUser" in data:
+                    self.bprint("Active boost OK")
+                else:
+                    self.bprint("Active boost failed")
+
     def claim(self):
+        self.get_balance_info()
         current_time = datetime.datetime.now()
         current_timestamp = int(current_time.timestamp())
         data = {
             "count": self.last_remain,
-            "availableTaps": 4433,
+            "availableTaps": 0,
             "timestamp": current_timestamp
         }
         try:
             response = requests.post(url, headers=self.headers, json=data, proxies=self.proxy)
             data = response.json()
             self.print_balance(data['clickerUser']['balanceCoins'])
-            # print(f"{self.name}: Account balance: {data['clickerUser']['balanceCoins']}")
-            return data["clickerUser"]["availableTaps"]
         except Exception as e:
             self.bprint(e)
-            return 1
+
+        self.boost_if_ok()

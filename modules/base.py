@@ -4,7 +4,7 @@ import requests
 import urllib.parse
 
 TIME_WAIT = 10
-MODULE_VER = "2.1"
+MODULE_VER = "2.2"
 def print_green_line(line):
     GREEN = "\033[92m"
     RESET = "\033[0m"

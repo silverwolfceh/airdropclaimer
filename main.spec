@@ -14,7 +14,7 @@ ICON_FILE = "icon.png"
 def post_build():
     # Copying supported file
     dest = os.path.join("dist", PROGRAM_NAME)
-    supported_file = ["config.json", "ua.json", "proxy.txt"]
+    supported_file = ["config.json", "ua.json", "proxy.txt", "helper/confighelper.html", "helper/data.js"]
     for d in supported_file:
         shutil.copy(d, dest)
 

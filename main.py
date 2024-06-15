@@ -8,7 +8,7 @@ from utils import open_helper, check_update
 from worker import worker
 from modules.base import MODULE_VER
 
-APP_VERSION = "2.1"
+APP_VERSION = "2.2"
 
 worker_queue = queue.Queue()
 is_app_running = True
@@ -91,8 +91,8 @@ if __name__ == "__main__":
     if len(sys.argv) == 2:
         configfile = sys.argv[1]
     elif len(sys.argv) == 3:
-        configfile = sys.argv[1]
-        max_threads = int(sys.argv[2])
+        configfile = sys.argv[2]
+        max_threads = int(sys.argv[1])
     initialized_app(configfile)
     for t in threads:
         t.start()
