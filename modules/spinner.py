@@ -209,6 +209,7 @@ class spinner(basetap):
         self.get_info()
         while self.try_upgrade():
             time.sleep(1)
+        self.fix_spinner()
         if self.wait_time <= 0:
             self.claim_spinner()
         
