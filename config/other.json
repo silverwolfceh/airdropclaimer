@@ -1,0 +1,44 @@
+[
+	{
+		"coin": "hotgame",
+		"accid": "rokbotsxyz.tg",
+		"Authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjQyMjIxMjYsImRpZCI6MjY4NDQ1NTIsImRldmljZSI6bnVsbCwiYWNjb3VudF9pZCI6InJva2JvdHN4eXoudGciLCJkZXZpY2VfaWQiOiIwNWIxNWIyNS03NDliLTRkNDEtOGU4Ny1hNTM1MWRmZjU1MWMiLCJwbGF0Zm9ybSI6InRlbGVncmFtIiwidGltZXN0YW1wIjoxNzEzNDIzOTk0LjAsInZpZXdfb25seSI6ZmFsc2V9.b1CIy0P8XELdqznWOhEGyfxShomq_SvS6IWrG_2exY4",
+		"init_data": "user=%7B%22id%22%3A5624258194%2C%22first_name%22%3A%22The%20Meoware%22%2C%22last_name%22%3A%22%22%2C%22username%22%3A%22themeoware%22%2C%22language_code%22%3A%22en%22%2C%22allows_write_to_pm%22%3Atrue%7D&chat_instance=-1620440846169792460&chat_type=sender&auth_date=1717589707&hash=809dc76b68c33037c275396da2b16032cb925c8a4047f4d12eed369604e639ad",
+		"type": "socks5"
+	},
+	{
+		"coin": "cellcoin",
+		"Authorization": "user=%7B%22id%22%3A5624258194%2C%22first_name%22%3A%22Evis%22%2C%22last_name%22%3A%22The%20Cat%22%2C%22username%22%3A%22rokbotsxyz%22%2C%22language_code%22%3A%22en%22%2C%22allows_write_to_pm%22%3Atrue%7D&chat_instance=-1610386127424635901&chat_type=sender&start_param=6744843167&auth_date=1716820801&hash=7e2e27974f9ed5495d7405e923e07eb1aa87ca602391af6d30c76895bcc91e5b",
+		"type": "socks5"
+	},
+	{
+		"coin": "cexio",
+		"init_data": "query_id=AAGSXjtPAgAAAJJeO09dbVGu&user=%7B%22id%22%3A5624258194%2C%22first_name%22%3A%22Evis%22%2C%22last_name%22%3A%22The%20Cat%22%2C%22username%22%3A%22rokbotsxyz%22%2C%22language_code%22%3A%22en%22%2C%22allows_write_to_pm%22%3Atrue%7D&auth_date=1716720848&hash=4e04e36a8f6b01e10cb60affe69f40b19a029cd2e515e0213a133b19b68a3a84",
+		"type": "socks5"
+	},
+	{
+		"coin": "hamster",
+		"authorization": "Bearer 17135328889144GZkVJpJhxCCkBjffo6FNgBr2gM4pQTg8TU4ADhWjpJSTHI127AqcYfiDXS3VtgA5624258194",
+		"type": "socks5"
+	},
+	{
+		"coin": "yescoin",
+		"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI1NjI0MjU4MTk0IiwiY2hhdElkIjoiNTYyNDI1ODE5NCIsImlhdCI6MTcxNjAxNDAyNiwiZXhwIjoxNzE4NjA2MDI2LCJyb2xlQXV0aG9yaXplcyI6W10sInVzZXJJZCI6MTc4MTYwMDE1NzY2NTUxMzQ3Mn0.lIzwptF434dMYW3x72AJQb7cfcKUCevn62K0RJKey4DJPeiXGItoaTr5T9Q88NJN0Y1AI7nIh5noJf8y2SIwgQ",
+		"type": "socks5"
+	},
+	{
+		"coin": "timefarm",
+		"init_data": "query_id=AAGSXjtPAgAAAJJeO086jbG9&user=%7B%22id%22%3A5624258194%2C%22first_name%22%3A%22The%20Meoware%22%2C%22last_name%22%3A%22%22%2C%22username%22%3A%22themeoware%22%2C%22language_code%22%3A%22en%22%2C%22allows_write_to_pm%22%3Atrue%7D&auth_date=1718197736&hash=22bdb7867b605c1f3548ff34927505220cdeb211974ef3ac15811646ff5b9ea7",
+		"type": "socks5"
+	},
+	{
+		"coin": "spinner",
+		"init_data": "query_id=AAGSXjtPAgAAAJJeO087yRRU&user=%7B%22id%22%3A5624258194%2C%22first_name%22%3A%22The%20Meoware%22%2C%22last_name%22%3A%22%22%2C%22username%22%3A%22themeoware%22%2C%22language_code%22%3A%22en%22%2C%22allows_write_to_pm%22%3Atrue%7D&auth_date=1718377924&hash=cad7d3b7f1b84036c007424fcacab1907533a0829978fe0dffcf75fd1b669c32",
+		"type": "socks5"
+	},
+	{
+		"coin": "coinegg",
+		"init_data": "query_id=AAGSXjtPAgAAAJJeO08Oad0P&user=%7B%22id%22%3A5624258194%2C%22first_name%22%3A%22The%20Meoware%22%2C%22last_name%22%3A%22%22%2C%22username%22%3A%22themeoware%22%2C%22language_code%22%3A%22en%22%2C%22allows_write_to_pm%22%3Atrue%7D&auth_date=1718437694&hash=de21ad5c36a82792b340667718cc31c85fe8eea1e6c459fab9f6afd906385991",
+		"type": "socks5"
+	}
+]

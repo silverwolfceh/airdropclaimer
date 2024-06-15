@@ -1,0 +1,20 @@
+[
+	{
+		"coin": "blum",
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYXNfZ3Vlc3QiOmZhbHNlLCJ0eXBlIjoiQUNDRVNTIiwiaXNzIjoiYmx1bSIsInN1YiI6ImZkMmVkOWIyLTQxYTAtNDBkZC05N2YyLTU3YjNjMzA5NjU1YSIsImV4cCI6MTcxODAyOTE5NywiaWF0IjoxNzE4MDI1NTk3fQ.6aX5seNGkQuN9Ef6lZ4-Yeqw15ZNWsX4k_KK_GQlpRU",
+		"init_data": "query_id=AAGSXjtPAgAAAJJeO08WZZ_U&user=%7B%22id%22%3A5624258194%2C%22first_name%22%3A%22The%20Meoware%22%2C%22last_name%22%3A%22%22%2C%22username%22%3A%22themeoware%22%2C%22language_code%22%3A%22en%22%2C%22allows_write_to_pm%22%3Atrue%7D&auth_date=1718025593&hash=1d1a42b8d53f1b9c3575eb44ebad2a2ecd99460bbb3e55ca6d197e820f2d2717",
+		"type": "socks5"
+	},
+	{
+		"coin": "blum",
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYXNfZ3Vlc3QiOmZhbHNlLCJ0eXBlIjoiQUNDRVNTIiwiaXNzIjoiYmx1bSIsInN1YiI6IjI4NDdhYjc1LTE5OTEtNDQ0Ni05YTdlLTRhNjYxYTE4YmYxMSIsImV4cCI6MTcxODAyOTQzNCwiaWF0IjoxNzE4MDI1ODM0fQ.iIR81rSx9dzZk13o1cInCZrGImKaPGQcSsc2_pVKVE8",
+		"init_data": "query_id=AAFvOPwgAwAAAG84_CBnyUbs&user=%7B%22id%22%3A6995851375%2C%22first_name%22%3A%22Tong%22%2C%22last_name%22%3A%22Vuu%22%2C%22username%22%3A%22wolfxforce%22%2C%22language_code%22%3A%22en%22%2C%22allows_write_to_pm%22%3Atrue%7D&auth_date=1718025830&hash=5a1a31d46c4a70b92ce7a5a5d0bb753541c362f186e69e64efa4697f622a53c1",
+		"type": "socks5"
+	},
+	{
+		"coin": "blum",
+		"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYXNfZ3Vlc3QiOmZhbHNlLCJ0eXBlIjoiQUNDRVNTIiwiaXNzIjoiYmx1bSIsInN1YiI6ImQ2MTlmOWExLTY1MDctNDY4ZS05YjIwLTRiNDI4MmU4YmQyNCIsImV4cCI6MTcxODAyOTQ5NiwiaWF0IjoxNzE4MDI1ODk2fQ.Xk5CJXQXu62t5Tf0PJ654bKgM0xP6-iicj7LyHAdhwg",
+		"init_data": "user=%7B%22id%22%3A7075868630%2C%22first_name%22%3A%22Lotus%22%2C%22last_name%22%3A%22Lab%22%2C%22language_code%22%3A%22en%22%2C%22allows_write_to_pm%22%3Atrue%7D&chat_instance=7741539615573924649&chat_type=group&start_param=ref_d4nnqd1KUx&auth_date=1718025891&hash=003ee3bbb763ac9669416b53a37d6b97c90c72ade921fa641304c95eca1ebb9e",
+		"type": "socks5"
+	}
+]

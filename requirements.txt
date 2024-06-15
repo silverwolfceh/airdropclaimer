@@ -1,0 +1,4 @@
+requests
+pytz
+requests[socks]
+js2py
