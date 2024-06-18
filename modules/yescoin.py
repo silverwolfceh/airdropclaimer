@@ -1,6 +1,10 @@
 import requests
 import time
-from .base import basetap
+from urllib.parse import unquote
+if __name__ == "__main__":
+    from base import basetap
+else:
+    from .base import basetap
 
 DEFAULT_HDRS = {
     "accept": "application/json, text/plain, */*",
@@ -22,12 +26,11 @@ DEFAULT_HDRS = {
 DEFAULT_TOKEN = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI1NjI0MjU4MTk0IiwiY2hhdElkIjoiNTYyNDI1ODE5NCIsImlhdCI6MTcxNjAxNDAyNiwiZXhwIjoxNzE4NjA2MDI2LCJyb2xlQXV0aG9yaXplcyI6W10sInVzZXJJZCI6MTc4MTYwMDE1NzY2NTUxMzQ3Mn0.lIzwptF434dMYW3x72AJQb7cfcKUCevn62K0RJKey4DJPeiXGItoaTr5T9Q88NJN0Y1AI7nIh5noJf8y2SIwgQ"
 
 class yescoin(basetap):
-    def __init__(self, token = DEFAULT_TOKEN, proxy = None, headers = DEFAULT_HDRS):
+    def __init__(self, proxy = None, headers = DEFAULT_HDRS):
         super().__init__()
-        self.token = token
+        self.token = None
         self.proxy = proxy
         self.headers = headers
-        self.headers["token"] = self.token
         self.stopped = False
         self.name = self.__class__.__name__
 
@@ -43,6 +46,17 @@ class yescoin(basetap):
             self.bprint(e)
         return 0
     
+    def login(self):
+        url = "https://api.yescoin.gold/user/login"
+        payload = {
+            "code" : unquote(self.init_data_raw)
+        }
+        print(payload)
+        data = self.post_data(url, payload)
+        if 'code' in data and data['code'] == 0:
+            self.token = data['data']['token']
+            self.update_header("Token", self.token)
+
     
     def collect_coin(self, numcollect):
         url = "https://api.yescoin.gold/game/collectCoin"
@@ -160,6 +174,7 @@ class yescoin(basetap):
 
     def claim(self):
         self.wait_time = 5
+        self.login()
         self.monitor_special_box()
         remain_coin = self.get_remain_coin()
         self.collect_coin(remain_coin)
@@ -173,4 +188,11 @@ class yescoin(basetap):
         
 
     def parse_config(self, cline):
-        self.update_header("token", cline["token"])
+        self.parse_init_data_raw(cline["init_data"])
+
+
+if __name__ == "__main__":
+    obj = yescoin()
+    cline = {"init_data" : "user=%7B%22id%22%3A5624258194%2C%22first_name%22%3A%22The%20Meoware%22%2C%22last_name%22%3A%22%22%2C%22username%22%3A%22themeoware%22%2C%22language_code%22%3A%22en%22%2C%22allows_write_to_pm%22%3Atrue%7D&chat_instance=-5524349719109734217&chat_type=sender&auth_date=1718718929&hash=4d3ebc8253579ce8beb0d4ad16fb15262bba00ed6fe772f58911fb91f5dd5943"}
+    obj.parse_config(cline)
+    obj.login()
