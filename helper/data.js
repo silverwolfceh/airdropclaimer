@@ -7,6 +7,7 @@ var configtemplate = [
     {"timefarm" : {"init_data" : "Telegram init data", "Proxy" : "Proxy address", "type" : "Proxy type"}},
     {"spinner" : {"init_data" : "Telegram init data", "Proxy" : "Proxy address", "type" : "Proxy type"}},
     {"coinegg" : {"init_data" : "Telegram init data", "Proxy" : "Proxy address", "type" : "Proxy type"}},
+    {"gemz" : {"init_data" : "Telegram init data", "Proxy" : "Proxy address", "type" : "Proxy type"}},
     {"tapswap" : {"Authorization" : "Authorization data", "init_data" : "Telegram init data", "Proxy" : "Proxy address", "type" : "Proxy type"}},
     {"yescoin" : {"init_data" : "Telegram init data", "Proxy" : "Proxy address", "type" : "Proxy type"}},
     {"blum" : {"Authorization" : "Authorization data", "init_data" : "Telegram init data", "Proxy" : "Proxy address", "type" : "Proxy type"}}
