@@ -205,7 +205,7 @@ class spinner(basetap):
         return False
 
     def claim(self):
-        # obj.open_daily_box()
+        self.open_daily_box()
         self.get_info()
         while self.try_upgrade():
             time.sleep(1)
