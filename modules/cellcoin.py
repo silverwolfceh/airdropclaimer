@@ -1,7 +1,11 @@
 import requests
-from .base import basetap
+if __name__ == "__main__":
+    from base import basetap
+else:
+    from .base import basetap
 from datetime import datetime, timedelta, timezone
-
+import random
+import time
 
 DEFAULT_HEADER = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 Edg/125.0.0.0",
@@ -28,6 +32,7 @@ class cellcoin(basetap):
         self.stopped = False
         self.wait_time = 20
         self.name = self.__class__.__name__
+        self.energy = 0
         self.storage_to_mining_time = {
             0 : 2,
             1 : 3,
@@ -68,6 +73,7 @@ class cellcoin(basetap):
             response = requests.post(url, headers=self.headers)
             data = response.json()
             self.get_next_wating_time(data["user"]["last_claimed_at"], data["user"]["storage_level"])
+            self.energy = data["user"]["energy"]
             if self.wait_time > 0:
                 self.print_waiting_time()
         except Exception as e:
@@ -88,6 +94,27 @@ class cellcoin(basetap):
         except Exception as e:
             self.bprint(e)
 
+    def tap(self):
+        url = "https://cellcoin.org/clicks"
+
+        payload = {
+            "clicks": random.randint(5, 15)
+        }
+
+        if self.energy <= 25:
+            self.bprint("No tap available. waiting 5 minutes")
+            time.sleep(300)
+
+        try:
+            data = self.post_data(url, payload)
+            if "user" in data and "energy" in data["user"]:
+                self.bprint("Tap success")
+                self.print_balance(float(data["user"]["balance"]))
+                self.energy = data["user"]["energy"]
+        except Exception as e:
+            self.bprint(e)
+
+
     def parse_config(self, cline):
         self.update_header("Authorization", cline["Authorization"])
 
@@ -96,4 +123,17 @@ class cellcoin(basetap):
         if self.wait_time <= 0:
             self.try_claim()
                 
-            
+        while True:
+            if self.stopped:
+                break
+            self.tap()
+            time.sleep(10)
+
+if __name__ == "__main__":
+    obj = cellcoin()
+    cline = {
+        "Authorization": "user=%7B%22id%22%3A5624258194%2C%22first_name%22%3A%22Evis%22%2C%22last_name%22%3A%22The%20Cat%22%2C%22username%22%3A%22rokbotsxyz%22%2C%22language_code%22%3A%22en%22%2C%22allows_write_to_pm%22%3Atrue%7D&chat_instance=-1610386127424635901&chat_type=sender&start_param=6744843167&auth_date=1716819298&hash=458146b43fb6ebe52ec993f095969dcfc619474cbf43cd31cb7864356c2d9951"
+    }
+    obj.parse_config(cline)
+    obj.claim()
+
