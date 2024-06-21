@@ -103,7 +103,7 @@ class worker(threading.Thread):
 					self.acquire_lock()
 					ins.claim()
 					if self.cb:
-						print(f"Waing {ins.wait_time} seconds for next run")
+						print(f"Waiting {ins.wait_time} seconds for next run")
 						self.cb(ins.wait_time, self.params)
 					self.release_lock()
 			except Exception as e:

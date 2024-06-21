@@ -5,7 +5,6 @@ else:
     from .base import basetap
 from datetime import datetime, timedelta, timezone
 import random
-import time
 
 DEFAULT_HEADER = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 Edg/125.0.0.0",
@@ -101,9 +100,6 @@ class cellcoin(basetap):
             "clicks": random.randint(5, 15)
         }
 
-        if self.energy <= 25:
-            self.bprint("No tap available. waiting 5 minutes")
-            time.sleep(300)
 
         try:
             data = self.post_data(url, payload)
@@ -111,6 +107,18 @@ class cellcoin(basetap):
                 self.bprint("Tap success")
                 self.print_balance(float(data["user"]["balance"]))
                 self.energy = data["user"]["energy"]
+                self.get_next_wating_time(data["user"]["last_claimed_at"], data["user"]["storage_level"])
+                if self.wait_time <= 0:
+                    self.try_claim()
+                else:
+                    self.print_waiting_time()
+
+                if self.energy <= 25:
+                    self.bprint("No tap available!")
+                    self.wait_time = 300
+                else:
+                    self.wait_time = 10
+
         except Exception as e:
             self.bprint(e)
 
@@ -119,15 +127,7 @@ class cellcoin(basetap):
         self.update_header("Authorization", cline["Authorization"])
 
     def claim(self):
-        self.get_balance_and_remain_time()
-        if self.wait_time <= 0:
-            self.try_claim()
-                
-        while True:
-            if self.stopped:
-                break
-            self.tap()
-            time.sleep(10)
+        self.tap()
 
 if __name__ == "__main__":
     obj = cellcoin()
