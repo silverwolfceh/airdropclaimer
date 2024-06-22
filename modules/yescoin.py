@@ -41,7 +41,8 @@ class yescoin(basetap):
             if res.status_code == 200:
                 data = res.json()
                 # print(f"{self.name}: {data}")
-                return int(int(data["data"]["coinPoolLeftCount"]) / 10)
+                self.bprint("Remain coin: " + str(data["data"]["coinPoolLeftCount"]))
+                return int(data["data"]["coinPoolLeftCount"])
         except Exception as e:
             self.bprint(e)
         return 0
@@ -61,8 +62,8 @@ class yescoin(basetap):
     def collect_coin(self, numcollect):
         url = "https://api.yescoin.gold/game/collectCoin"
         try:
-            res = requests.post(url, headers=self.headers, data=str(numcollect), proxies=self.proxy)
-            # print(f"{self.name}: {res.json()}")
+            res = requests.post(url, headers=self.headers, data=str(numcollect/100), proxies=self.proxy)
+            print(f"{self.name}: {res.json()}")
         except Exception as e:
             self.bprint(e)
 
@@ -137,8 +138,8 @@ class yescoin(basetap):
                             }
                             url = "https://api.yescoin.gold/game/collectSpecialBoxCoin"
                             res = requests.post(url, headers=self.headers, proxies=self.proxy, json=payload)
-                            data = res.json()
-                            self.bprint(data)
+                            data1 = res.json()
+                            self.bprint(data1)
                     else:
                         self.bprint("No autobox found")
                 except Exception as e:
