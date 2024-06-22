@@ -12,7 +12,7 @@ A simple application written in Python with requests library to achieve the smoo
 | Memefi      | memefi.py | https://t.me/memefi_coin_bot?start=r_e152eb67a1 |  Working | Login, click, re-charge energy (required clean IP) |
 | Hamster Kombat      | hamster.py | https://t.me/hamster_kombat_bot?start=kentId5624258194  |  Working | claim and boost |
 | CexIO      | cexio.py | https://t.me/cexio_tap_bot?start=1716560687385300 |  Working | Tap, get farm, get referal, start farm |
-| CellCoin      | cellcoin.py | https://t.me/cellcoin_bot?start=5624258194 |  Working | Claim |
+| CellCoin      | cellcoin.py | https://t.me/cellcoin_bot?start=5624258194 |  Working | Claim, Tap |
 | Blum      | blum.py | https://t.me/BlumCryptoBot/app?startapp=ref_d4nnqd1KUx |  Working | Claim, hacking game (disabled) |
 | HotCoin      | hotgame.py | https://t.me/herewalletbot/app?startapp=4222126 |  Working | Claim |
 | TimeFarm      | timefarm.py | https://t.me/TimeFarmCryptoBot?start=iW2YPYCj0TkCSyRm |  Working | Claim, start farm |

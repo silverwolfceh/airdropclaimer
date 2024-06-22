@@ -75,10 +75,10 @@ class basetap:
 
     def print_balance(self, bl):
         if int(bl) > self.oldbalance:
-            print_green_line(f"{self.name}: Balance 💎: {bl} ^")
+            print_green_line(f"{self.name}: Balance 💎: {bl:,.0f} ^")
             self.oldbalance = int(bl)
         else:
-            print(f"{self.name}: Balance 💎: {bl}")
+            print(f"{self.name}: Balance 💎: {bl:,.0f}")
 
     def bprint(self, msg):
         print(f"{self.name}: {msg}")
@@ -95,9 +95,6 @@ class basetap:
     
     def claim(self):
         self.bprint("You should implement this function")
-
-    def set_proxy(self, proxy):
-        self.proxy = proxy
 
     def request_data_json(self, type, url, data):
         try:
