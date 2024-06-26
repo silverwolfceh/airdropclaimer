@@ -66,13 +66,13 @@ class cellcoin(basetap):
         self.bprint(f"Waiting time: {int(hours)} hours and {int(minutes)} minutes")
 
     def get_balance_and_remain_time(self):
-        url = "https://cellcoin.org/init"
+        url = "https://cellcoin.org/users/session"
 
         try:
             response = requests.post(url, headers=self.headers)
             data = response.json()
-            self.get_next_wating_time(data["user"]["last_claimed_at"], data["user"]["storage_level"])
-            self.energy = data["user"]["energy"]
+            self.get_next_wating_time(data["cell"]["storage_fills_at"], data["cell"]["storage_level"])
+            self.energy = data["cell"]["energy_amount"]
             if self.wait_time > 0:
                 self.print_waiting_time()
         except Exception as e:
@@ -80,34 +80,34 @@ class cellcoin(basetap):
 
 
     def try_claim(self):
-        url = "https://cellcoin.org/claim"
+        url = "https://cellcoin.org/cells/claim_storage"
         try:
             response = requests.post(url, headers=self.headers)
             data = response.json()
-            if int(data["user"]["storage_balance"]) == 0:
+            if int(data["cell"]["storage_balance"]) == 0:
                 self.bprint("Claim success")
-            self.print_balance(float(data["user"]["balance"]))
-            self.get_next_wating_time(data["user"]["last_claimed_at"], data["user"]["storage_level"])
+            self.print_balance(float(data["cell"]["balance"]))
+            self.get_next_wating_time(data["cell"]["storage_fills_at"], data["cell"]["storage_level"])
             if self.wait_time > 0:
                 self.print_waiting_time()
         except Exception as e:
             self.bprint(e)
 
     def tap(self):
-        url = "https://cellcoin.org/clicks"
+        url = "https://cellcoin.org/cells/submit_clicks"
 
         payload = {
-            "clicks": random.randint(5, 15)
+            "clicks_amount": random.randint(5, 15)
         }
 
 
         try:
             data = self.post_data(url, payload)
-            if "user" in data and "energy" in data["user"]:
+            if "cell" in data and "energy_amount" in data["cell"]:
                 self.bprint("Tap success")
-                self.print_balance(float(data["user"]["balance"]))
-                self.energy = data["user"]["energy"]
-                self.get_next_wating_time(data["user"]["last_claimed_at"], data["user"]["storage_level"])
+                self.print_balance(float(data["cell"]["balance"]))
+                self.energy = data["cell"]["energy_amount"]
+                self.get_next_wating_time(data["cell"]["storage_fills_at"], data["cell"]["storage_level"])
                 if self.wait_time <= 0:
                     self.try_claim()
                 else:
