@@ -51,7 +51,7 @@ class cellcoin(basetap):
 
     def get_next_wating_time(self, last_claim, storage_level):
         mining_time = self.get_mine_time(storage_level)
-        last_claimed_dt = datetime.strptime(last_claim, "%Y-%m-%dT%H:%M:%S.%fZ").replace(tzinfo=timezone.utc)
+        last_claimed_dt = datetime.strptime(last_claim[:26] + 'Z', "%Y-%m-%dT%H:%M:%S.%fZ").replace(tzinfo=timezone.utc)
         next_claimed_dt = last_claimed_dt + timedelta(hours=mining_time)
         current_time = datetime.now(timezone.utc)
         # Calculate the waiting time in seconds
