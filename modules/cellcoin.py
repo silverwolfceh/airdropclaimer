@@ -97,7 +97,7 @@ class cellcoin(basetap):
         url = "https://cellcoin.org/cells/submit_clicks"
 
         payload = {
-            "clicks_amount": random.randint(5, 15)
+            "clicks_amount": random.randint(100, 300)
         }
 
 
@@ -113,7 +113,7 @@ class cellcoin(basetap):
                 else:
                     self.print_waiting_time()
 
-                if self.energy <= 25:
+                if self.energy <= 100:
                     self.bprint("No tap available!")
                     self.wait_time = 300
                 else:
