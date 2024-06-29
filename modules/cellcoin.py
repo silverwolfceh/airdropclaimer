@@ -3,7 +3,7 @@ if __name__ == "__main__":
     from base import basetap
 else:
     from .base import basetap
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 import random
 
 DEFAULT_HEADER = {
@@ -49,13 +49,11 @@ class cellcoin(basetap):
             5 : 24
         }[x]
 
-    def get_next_wating_time(self, last_claim, storage_level):
-        mining_time = self.get_mine_time(storage_level)
-        last_claimed_dt = datetime.strptime(last_claim[:26] + 'Z', "%Y-%m-%dT%H:%M:%S.%fZ").replace(tzinfo=timezone.utc)
-        next_claimed_dt = last_claimed_dt + timedelta(hours=mining_time)
+    def get_next_wating_time(self, next_claimed_at):
+        next_claimed_at = datetime.strptime(next_claimed_at[:26] + 'Z', "%Y-%m-%dT%H:%M:%S.%fZ").replace(tzinfo=timezone.utc)
         current_time = datetime.now(timezone.utc)
         # Calculate the waiting time in seconds
-        waiting_time_seconds = (next_claimed_dt - current_time).total_seconds()
+        waiting_time_seconds = (next_claimed_at - current_time).total_seconds()
         # Ensure the waiting time is not negative
         self.wait_time = max(0, waiting_time_seconds)
 
@@ -71,7 +69,7 @@ class cellcoin(basetap):
         try:
             response = requests.post(url, headers=self.headers)
             data = response.json()
-            self.get_next_wating_time(data["cell"]["storage_fills_at"], data["cell"]["storage_level"])
+            self.get_next_wating_time(data["cell"]["storage_fills_at"])
             self.energy = data["cell"]["energy_amount"]
             if self.wait_time > 0:
                 self.print_waiting_time()
@@ -87,7 +85,7 @@ class cellcoin(basetap):
             if int(data["cell"]["storage_balance"]) == 0:
                 self.bprint("Claim success")
             self.print_balance(float(data["cell"]["balance"]))
-            self.get_next_wating_time(data["cell"]["storage_fills_at"], data["cell"]["storage_level"])
+            self.get_next_wating_time(data["cell"]["storage_fills_at"])
             if self.wait_time > 0:
                 self.print_waiting_time()
         except Exception as e:
@@ -97,7 +95,7 @@ class cellcoin(basetap):
         url = "https://cellcoin.org/cells/submit_clicks"
 
         payload = {
-            "clicks_amount": random.randint(100, 300)
+            "clicks_amount": random.randint(100, 200)
         }
 
 
@@ -107,13 +105,13 @@ class cellcoin(basetap):
                 self.bprint("Tap success")
                 self.print_balance(float(data["cell"]["balance"]))
                 self.energy = data["cell"]["energy_amount"]
-                self.get_next_wating_time(data["cell"]["storage_fills_at"], data["cell"]["storage_level"])
+                self.get_next_wating_time(data["cell"]["storage_fills_at"])
                 if self.wait_time <= 0:
                     self.try_claim()
                 else:
                     self.print_waiting_time()
 
-                if self.energy <= 100:
+                if self.energy <= 200:
                     self.bprint("No tap available!")
                     self.wait_time = 300
                 else:
