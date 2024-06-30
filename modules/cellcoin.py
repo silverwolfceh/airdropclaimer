@@ -50,7 +50,7 @@ class cellcoin(basetap):
         }[x]
 
     def get_next_wating_time(self, next_claimed_at):
-        next_claimed_at = datetime.strptime(next_claimed_at[:26] + 'Z', "%Y-%m-%dT%H:%M:%S.%fZ").replace(tzinfo=timezone.utc)
+        next_claimed_at = datetime.strptime(next_claimed_at[:25] + 'Z', "%Y-%m-%dT%H:%M:%S.%fZ").replace(tzinfo=timezone.utc)
         current_time = datetime.now(timezone.utc)
         # Calculate the waiting time in seconds
         waiting_time_seconds = (next_claimed_at - current_time).total_seconds()
