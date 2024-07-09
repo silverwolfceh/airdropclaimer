@@ -100,9 +100,11 @@ class basetap:
         try:
             if type == "post":
                res = requests.post(url, json=data, headers=self.headers, proxies=self.proxy)
+               res.raise_for_status()
                return res
             elif type == "get":
                res = requests.get(url, json=data, headers=self.headers, proxies=self.proxy)
+               res.raise_for_status()
                return res
         except Exception as e:
             self.bprint(e)

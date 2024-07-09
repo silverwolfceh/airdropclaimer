@@ -49,10 +49,13 @@ class cellcoin(basetap):
             5 : 24
         }[x]
 
+    def parse_date_time(self, date_at):
+        if len(date_at) > 25:
+            date_at = date_at[:25] + 'Z'
+        return datetime.strptime(date_at, "%Y-%m-%dT%H:%M:%S.%fZ").replace(tzinfo=timezone.utc)
+
     def get_next_wating_time(self, next_claimed_at):
-        if len(next_claimed_at) > 25:
-            next_claimed_at = next_claimed_at[:25] + 'Z'
-        next_claimed_at = datetime.strptime(next_claimed_at, "%Y-%m-%dT%H:%M:%S.%fZ").replace(tzinfo=timezone.utc)
+        next_claimed_at = self.parse_date_time(next_claimed_at)
         current_time = datetime.now(timezone.utc)
         # Calculate the waiting time in seconds
         waiting_time_seconds = (next_claimed_at - current_time).total_seconds()
@@ -78,6 +81,25 @@ class cellcoin(basetap):
         except Exception as e:
             self.bprint(e)
 
+    def get_daily_reward(self):
+        url = "https://cellcoin.org/cells/levels/upgrade"
+        payload = {
+            'level_type': 'bonus'
+        }
+
+        try:
+            data = self.post_data(url, payload)
+            if "error" in data:
+                self.bprint(f"Clamin failed! {data['error']}")
+            else:
+                self.bprint("Claim daily reward success")
+
+        except Exception as e:
+            self.bprint(e)
+
+    def is_checkin_daily_reward(self, bonus_claimed_at):
+        return self.parse_date_time(bonus_claimed_at).date() == datetime.now().date()
+        
 
     def try_claim(self):
         url = "https://cellcoin.org/cells/claim_storage"
@@ -100,11 +122,15 @@ class cellcoin(basetap):
             "clicks_amount": random.randint(100, 200)
         }
 
-
         try:
             data = self.post_data(url, payload)
             if "cell" in data and "energy_amount" in data["cell"]:
                 self.bprint("Tap success")
+                if self.is_checkin_daily_reward(data["cell"]["bonus_claimed_at"]):
+                    self.bprint("Already claim daily reward!")
+                else:
+                    print("Trying claim daily reward")
+                    self.get_daily_reward()
                 self.print_balance(float(data["cell"]["balance"]))
                 self.energy = data["cell"]["energy_amount"]
                 self.get_next_wating_time(data["cell"]["storage_fills_at"])
