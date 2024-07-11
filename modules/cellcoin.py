@@ -3,7 +3,7 @@ if __name__ == "__main__":
     from base import basetap
 else:
     from .base import basetap
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 import random
 
 DEFAULT_HEADER = {
@@ -49,13 +49,16 @@ class cellcoin(basetap):
             5 : 24
         }[x]
 
-    def get_next_wating_time(self, last_claim, storage_level):
-        mining_time = self.get_mine_time(storage_level)
-        last_claimed_dt = datetime.strptime(last_claim, "%Y-%m-%dT%H:%M:%S.%fZ").replace(tzinfo=timezone.utc)
-        next_claimed_dt = last_claimed_dt + timedelta(hours=mining_time)
+    def parse_date_time(self, date_at):
+        if len(date_at) > 25:
+            date_at = date_at[:25] + 'Z'
+        return datetime.strptime(date_at, "%Y-%m-%dT%H:%M:%S.%fZ").replace(tzinfo=timezone.utc)
+
+    def get_next_wating_time(self, next_claimed_at):
+        next_claimed_at = self.parse_date_time(next_claimed_at)
         current_time = datetime.now(timezone.utc)
         # Calculate the waiting time in seconds
-        waiting_time_seconds = (next_claimed_dt - current_time).total_seconds()
+        waiting_time_seconds = (next_claimed_at - current_time).total_seconds()
         # Ensure the waiting time is not negative
         self.wait_time = max(0, waiting_time_seconds)
 
@@ -66,54 +69,77 @@ class cellcoin(basetap):
         self.bprint(f"Waiting time: {int(hours)} hours and {int(minutes)} minutes")
 
     def get_balance_and_remain_time(self):
-        url = "https://cellcoin.org/init"
+        url = "https://cellcoin.org/users/session"
 
         try:
             response = requests.post(url, headers=self.headers)
             data = response.json()
-            self.get_next_wating_time(data["user"]["last_claimed_at"], data["user"]["storage_level"])
-            self.energy = data["user"]["energy"]
+            self.get_next_wating_time(data["cell"]["storage_fills_at"])
+            self.energy = data["cell"]["energy_amount"]
             if self.wait_time > 0:
                 self.print_waiting_time()
         except Exception as e:
             self.bprint(e)
 
+    def get_daily_reward(self):
+        url = "https://cellcoin.org/cells/levels/upgrade"
+        payload = {
+            'level_type': 'bonus'
+        }
+
+        try:
+            data = self.post_data(url, payload)
+            if "error" in data:
+                self.bprint(f"Clamin failed! {data['error']}")
+            else:
+                self.bprint("Claim daily reward success")
+
+        except Exception as e:
+            self.bprint(e)
+
+    def is_checkin_daily_reward(self, bonus_claimed_at):
+        return self.parse_date_time(bonus_claimed_at).date() == datetime.now().date()
+        
 
     def try_claim(self):
-        url = "https://cellcoin.org/claim"
+        url = "https://cellcoin.org/cells/claim_storage"
         try:
             response = requests.post(url, headers=self.headers)
             data = response.json()
-            if int(data["user"]["storage_balance"]) == 0:
+            if int(data["cell"]["storage_balance"]) == 0:
                 self.bprint("Claim success")
-            self.print_balance(float(data["user"]["balance"]))
-            self.get_next_wating_time(data["user"]["last_claimed_at"], data["user"]["storage_level"])
+            self.print_balance(float(data["cell"]["balance"]))
+            self.get_next_wating_time(data["cell"]["storage_fills_at"])
             if self.wait_time > 0:
                 self.print_waiting_time()
         except Exception as e:
             self.bprint(e)
 
     def tap(self):
-        url = "https://cellcoin.org/clicks"
+        url = "https://cellcoin.org/cells/submit_clicks"
 
         payload = {
-            "clicks": random.randint(5, 15)
+            "clicks_amount": random.randint(100, 200)
         }
-
 
         try:
             data = self.post_data(url, payload)
-            if "user" in data and "energy" in data["user"]:
+            if "cell" in data and "energy_amount" in data["cell"]:
                 self.bprint("Tap success")
-                self.print_balance(float(data["user"]["balance"]))
-                self.energy = data["user"]["energy"]
-                self.get_next_wating_time(data["user"]["last_claimed_at"], data["user"]["storage_level"])
+                if self.is_checkin_daily_reward(data["cell"]["bonus_claimed_at"]):
+                    self.bprint("Already claim daily reward!")
+                else:
+                    print("Trying claim daily reward")
+                    self.get_daily_reward()
+                self.print_balance(float(data["cell"]["balance"]))
+                self.energy = data["cell"]["energy_amount"]
+                self.get_next_wating_time(data["cell"]["storage_fills_at"])
                 if self.wait_time <= 0:
                     self.try_claim()
                 else:
                     self.print_waiting_time()
 
-                if self.energy <= 25:
+                if self.energy <= 200:
                     self.bprint("No tap available!")
                     self.wait_time = 300
                 else:
