@@ -21,6 +21,24 @@ class basetap:
         self.init_data_raw = ""
         self.init_data_load = False
         self.modver = "v1.0"
+        self.printlock = False
+
+    def __enter__(self):
+        return self
+    
+    def __exit__(self, *args, **kwargs):
+        pass
+
+    def set_print_lock(self, lock):
+        self.printlock = lock
+
+    def acquire_lock(self):
+        if self.printlock:
+            self.printlock.acquire()
+        
+    def release_lock(self):
+        if self.printlock and self.printlock.locked():
+            self.printlock.release()
 
     def set_ua(self, ua):
         uastr = ua
@@ -68,23 +86,33 @@ class basetap:
 
     def stop(self):
         self.stopped = True
+        self.acquire_lock()
         print(f"{self.name}: stopped" )
+        self.release_lock()
 
     def set_name(self, myname):
         self.name = myname
 
     def print_balance(self, bl):
+        accname = self.init_data["user"]["username"] if self.init_data_load else ""
         if int(bl) > self.oldbalance:
-            print_green_line(f"{self.name}: Balance 💎: {bl:,.0f} ^")
+            self.acquire_lock()
+            print_green_line(f"{self.name}-{accname}: Balance 💎: {bl:,.0f} ^")
+            self.release_lock()
             self.oldbalance = int(bl)
         else:
-            print(f"{self.name}: Balance 💎: {bl:,.0f}")
+            self.acquire_lock()
+            print(f"{self.name}-{accname}: Balance 💎: {bl:,.0f}")
+            self.release_lock()
 
     def bprint(self, msg):
+        self.acquire_lock()
         print(f"{self.name}: {msg}")
+        self.release_lock()
 
     def cprint(self, msg):
-        print_green_line(f"{self.name}: {msg}")
+        accname = self.init_data["user"]["username"] if self.init_data_load else ""
+        print_green_line(f"{self.name}-{accname}: {msg}")
 
     def wait(self):
         print(f"{self.name}: wait {self.wait_time}s" )

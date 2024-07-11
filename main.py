@@ -16,6 +16,7 @@ worker_queue_lock = threading.Lock()
 threads = []
 max_threads = 5
 # request_locking = threading.Lock()
+print_locking = threading.Lock()
 request_locking = None
 
 def signal_handler(sig, frame):
@@ -71,7 +72,7 @@ def initialized_app(configfile):
     
     print(f"Start launching {max_threads} threads...")
     for i in range(0, max_threads):
-        t = worker(worker_queue, schedule_new_iteration, request_locking)
+        t = worker(worker_queue, schedule_new_iteration, request_locking, print_locking)
         threads.append(t)
 
 intro = '''

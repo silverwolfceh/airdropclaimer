@@ -41,7 +41,7 @@ class workerhelper:
 
 class worker(threading.Thread):
 	# inqueue: give me a queue, I will get the config line
-	def __init__(self, inqueue, registercb, request_locking = None):
+	def __init__(self, inqueue, registercb, request_locking = None, print_locking = None):
 		threading.Thread.__init__(self)
 		self.q = inqueue
 		self.cb = registercb
@@ -50,6 +50,7 @@ class worker(threading.Thread):
 			sys.exit(1)
 		self.running = True
 		self.coin = None
+		self.print_lock = print_locking
 		self.lock_request = request_locking
 	
 	def stop(self):
