@@ -94,7 +94,7 @@ class basetap:
         self.name = myname
 
     def print_balance(self, bl):
-        accname = self.init_data["user"]["username"] if self.init_data_load else ""
+        accname = self.init_data["user"]["first_name"] if self.init_data_load else ""
         if int(bl) > self.oldbalance:
             self.acquire_lock()
             print_green_line(f"{self.name}-{accname}: Balance 💎: {bl:,.0f} ^")

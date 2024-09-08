@@ -1,8 +1,13 @@
 import requests
 from datetime import datetime
 import time
+import sys
+import random
 import pytz
-from .base import basetap
+if __name__ == "__main__":
+    from base import basetap
+else:
+    from .base import basetap
 
 DEFAULT_HEADER = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 Edg/125.0.0.0",
@@ -57,7 +62,7 @@ class blump(basetap):
         self.refresh_token = ""
     
     def play_game(self):
-        return False
+        # return False
         url = "https://game-domain.blum.codes/api/v1/game/play"
         try:
             res = requests.post(url, headers=self.headers, proxies=self.proxy)
@@ -66,11 +71,14 @@ class blump(basetap):
                 gameid = data["gameId"]
                 body = {
                     "gameId": gameid,
-                    "points": 300000
+                    "points": random.randint(150, 200)
                 }
                 url = "https://game-domain.blum.codes/api/v1/game/claim"
-                time.sleep(31)
+                self.animated_sleeping(31)
                 res = requests.post(url, headers=self.headers, json=body, proxies=self.proxy)
+                if res.status_code == 200:
+                    self.bprint(f"Success claim : {body['points']}")
+                
         except Exception as e:
             self.bprint(e)
     
@@ -128,9 +136,10 @@ class blump(basetap):
             "query" : self.init_data_raw
         }
         try:
-            res = requests.post("https://gateway.blum.codes/v1/auth/provider/PROVIDER_TELEGRAM_MINI_APP", headers = UNAUTHORIZED_HDRs, json = data, proxies=self.proxy)
+            res = requests.post("https://user-domain.blum.codes/api/v1/auth/provider/PROVIDER_TELEGRAM_MINI_APP", headers = UNAUTHORIZED_HDRs, json = data, proxies=self.proxy)
             data = res.json()
             if "token" in data and "access" in data["token"]:
+                self.bprint("Login success")
                 self.update_header("authorization", "Bearer " + data["token"]["access"])
                 self.refresh_token = data["token"]["refresh"]
                 return True
@@ -180,9 +189,34 @@ class blump(basetap):
         self.update_header("authorization", cline["Authorization"])
         self.parse_init_data_raw(cline["init_data"])
 
+    def animated_sleeping(self, duration=5, interval=0.5):
+        cursor = ['|', '/', '-', '\\']
+        end_time = time.time() + duration
+        i = 0
+        while time.time() < end_time:
+            sys.stdout.write("\r" + cursor[i % len(cursor)])
+            sys.stdout.flush()
+            i += 1
+            time.sleep(interval)
+        # sys.stdout.write("\rDone!\n")
+
     def claim(self):
+        self.login()
         self.get_daily_reward()
-        if self.get_balance_info():
-            self.claim_farm()
+        self.get_balance_info()
+        self.claim_farm()
+        while self.remain_play_pass > 0:
+            self.play_game()
+            self.get_balance_info()
+        # self.play_game()
+        # self.get_daily_reward()
+        # if self.get_balance_info():
+            # self.claim_farm()
             
-        
+if __name__ == "__main__":
+    obj = blump()
+    cline = {
+        "Authorization" : "",
+        "init_data": "query_id=AAGSXjtPAgAAAJJeO08WZZ_U&user=%7B%22id%22%3A5624258194%2C%22first_name%22%3A%22The%20Meoware%22%2C%22last_name%22%3A%22%22%2C%22username%22%3A%22themeoware%22%2C%22language_code%22%3A%22en%22%2C%22allows_write_to_pm%22%3Atrue%7D&auth_date=1718025593&hash=1d1a42b8d53f1b9c3575eb44ebad2a2ecd99460bbb3e55ca6d197e820f2d2717",    }
+    obj.parse_config(cline)
+    obj.claim()

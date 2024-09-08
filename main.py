@@ -75,14 +75,14 @@ def initialized_app(configfile):
         t = worker(worker_queue, schedule_new_iteration, request_locking, print_locking)
         threads.append(t)
 
-intro = '''
+intro = r"""
     _         _             _    _         _                    ____ _       _                     
    / \  _   _| |_ ___      / \  (_)_ __ __| |_ __ ___  _ __    / ___| | __ _(_)_ __ ___   ___ _ __ 
   / _ \| | | | __/ _ \    / _ \ | | '__/ _` | '__/ _ \| '_ \  | |   | |/ _` | | '_ ` _ \ / _ \ '__|
  / ___ \ |_| | || (_) |  / ___ \| | | | (_| | | | (_) | |_) | | |___| | (_| | | | | | | |  __/ |   
 /_/   \_\__,_|\__\___/  /_/   \_\_|_|  \__,_|_|  \___/| .__/   \____|_|\__,_|_|_| |_| |_|\___|_|   
                                                       |_|                                          
-'''
+"""
 if __name__ == "__main__":
     check_update(APP_VERSION, MODULE_VER)
     print(intro)
