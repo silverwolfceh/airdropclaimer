@@ -40,13 +40,13 @@ If you are advance user, use following:
   python main.py <num_thread> <json file> (example: python main.py 1 config.json)
 ```
 
-Note: config.json can be replaced by any file with similar structure generated from: [https://anbusystem.github.io/autoairdrop/helper/confighelper.html](https://home.rokbots.xyz/airdropclaimer/helper/confighelper.html)
+Note: config.json can be replaced by any file with similar structure generated from: [https://silverwolfceh.github.io/airdropclaimer/confighelper.html](https://silverwolfceh.github.io/airdropclaimer/confighelper.html)
 
 ## Support
 
 Sorry, due to my workload, no support available at the moment. In addition, you are fully responsible for your account. Our tool is open-source and not stealing any data, but if your account is banned, it is not our fault
 
-Join into my telegram channel: https://t.me/teleairdropscript
+Join into my telegram channel: https://t.me/lowkeyairdrop
 
 ## Contributing
 Help me by give a star for this repo.
