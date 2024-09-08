@@ -40,7 +40,7 @@ If you are advance user, use following:
   python main.py <num_thread> <json file> (example: python main.py 1 config.json)
 ```
 
-Note: config.json can be replaced by any file with similar structure generated from: [https://silverwolfceh.github.io/airdropclaimer/confighelper.html](https://silverwolfceh.github.io/airdropclaimer/confighelper.html)
+Note: config.json can be replaced by any file with similar structure generated from: [https://silverwolfceh.github.io/airdropclaimer/](https://silverwolfceh.github.io/airdropclaimer/)
 
 ## Support
 
