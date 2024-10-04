@@ -7,8 +7,9 @@ import sys
 from utils import open_helper, check_update
 from worker import worker
 from modules.base import MODULE_VER
+from scheduler import TaskScheduler
 
-APP_VERSION = "2.2"
+APP_VERSION = "2.3"
 
 worker_queue = queue.Queue()
 is_app_running = True
@@ -18,24 +19,22 @@ max_threads = 5
 # request_locking = threading.Lock()
 print_locking = threading.Lock()
 request_locking = None
+schedulerins = None
 
 def signal_handler(sig, frame):
     global is_app_running
     is_app_running = False
 
-def thread_wait_and_pushback(wait_time, cline):
-    global is_app_running, worker_queue, worker_queue_lock
-    sleeped_time = 0
-    while is_app_running and sleeped_time < wait_time:
-        time.sleep(1)
-        sleeped_time = sleeped_time + 1
+
+def give_task_to_worker(taskdata):
     with worker_queue_lock:
-        worker_queue.put(cline)
-    return
+        worker_queue.put(taskdata)
 
 def schedule_new_iteration(wait_time, cline):
-    t = threading.Thread(target=thread_wait_and_pushback, args=(wait_time, cline))
-    t.start()
+    if schedulerins:
+        schedulerins.schedule_task(wait_time, lambda: give_task_to_worker(cline))
+    else:
+        print("The scheduler didn't start yet")
 
 def load_config(configfile = "config.json"):
     with open(configfile) as f:
@@ -87,6 +86,7 @@ if __name__ == "__main__":
     check_update(APP_VERSION, MODULE_VER)
     print(intro)
     print(f"Build information | App: {APP_VERSION}, Script: {MODULE_VER}")
+    schedulerins = TaskScheduler()
     signal.signal(signal.SIGINT, signal_handler)
     configfile = "config.json"
     if len(sys.argv) == 2:
@@ -100,7 +100,8 @@ if __name__ == "__main__":
         time.sleep(1)
     while is_app_running:
         time.sleep(1)
-    
+    print("Quitting....")
+    schedulerins.stop()
     for t in threads:
         t.stop()
         # t.join()

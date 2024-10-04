@@ -106,8 +106,9 @@ class basetap:
             self.release_lock()
 
     def bprint(self, msg):
+        accname = self.init_data["user"]["username"] if self.init_data_load else ""
         self.acquire_lock()
-        print(f"{self.name}: {msg}")
+        print(f"{self.name}-{accname}: {msg}")
         self.release_lock()
 
     def cprint(self, msg):

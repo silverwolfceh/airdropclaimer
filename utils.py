@@ -33,43 +33,49 @@ def get_random_ua():
 		return ua["ua"]
 	return "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 Edg/124.0.0.0"
 
-def open_helper():
-	url = 'https://anbusystem.github.io/autoairdrop/helper/confighelper.html'
-	webbrowser.open_new_tab(url)
 
-def check_update_data(corever: str, modver: str):
-	url = "https://raw.githubusercontent.com/anbusystem/AutoAirdropClaimer/main/version.json"
-	update_data = {
-		"core" : {
-			"update" : False,
-			"url" : ""
-		},
-		"mod" : {
-			"update" : False,
-			"url" : ""
-		}
-	}
+class CONSTANT:
+	HELPER_URL = 'https://silverwolfceh.github.io/airdropclaimer/confighelper.html'
+	VERSION_URL = 'https://raw.githubusercontent.com/silverwolfceh/airdropclaimer/main/version.json'
+	CORE_UPDATE_PATH = "binurl"
+	PLUG_UPDATE_PATH = "zipurl"
+	CORE = "CORE"
+	PLUGIN = "PLUGIN"
+	VERSION = "version"
+
+def open_helper():
+	webbrowser.open_new_tab(CONSTANT.HELPER_URL)
+
+def get_update_info(corever: str, modver: str):
 	try:
-		res = requests.get(url)
+		coreupdateurl = None
+		pluginupdateurl = None
+		res = requests.get(CONSTANT.VERSION_URL)
 		data = res.json()
-		if corever != data["corever"]:
-			update_data["core"]["update"] = True
-			update_data["core"]["url"] = data["coreurl"]
-		if modver != data["modver"]:
-			update_data["mod"]["update"] = True
-			update_data["mod"]["url"] = data["modurl"]
-		return update_data
+		if CONSTANT.CORE in data and CONSTANT.PLUGIN in data:
+			if corever != data[CONSTANT.CORE][CONSTANT.VERSION]:
+				coreupdateurl = data[CONSTANT.CORE][CONSTANT.CORE_UPDATE_PATH]
+			if modver != data[CONSTANT.PLUGIN][CONSTANT.VERSION]:
+				pluginupdateurl = data[CONSTANT.PLUGIN][CONSTANT.PLUG_UPDATE_PATH]
+			return True, coreupdateurl, pluginupdateurl
+		else:
+			print("Failed to check update")
 	except Exception as e:
-		print("Check update failed")
-		return None
+		print(e)
+	return False, None, None
 	
 def check_update(corever: str, modver: str):
-	update_data = check_update_data(corever, modver)
-	if update_data and update_data["core"]["update"]:
-		execute_update("core", update_data["core"]["url"])
-	
-	if update_data and update_data["mod"]["update"]:
-		execute_update("mod", update_data["mod"]["url"])
+	ret, curl, purl = get_update_info(corever, modver)
+	if ret:
+		if curl:
+			execute_update(CONSTANT.CORE, curl)
+		if purl:
+			execute_update(CONSTANT.PLUGIN, purl)
+		restart_app()
+		
 
 def execute_update(type, url):
 	webbrowser.open_new_tab(url)
+
+def restart_app():
+	pass
