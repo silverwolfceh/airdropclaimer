@@ -7,19 +7,8 @@ A simple application written in Python with requests library to achieve the smoo
 
 
 ## Status:
-| Bot/Token name  | Script name  | Ref-link | Status | Function |
-| :------------ |:---------------:| :-----| -----: | :----- |
-| Yes coin      | yescoin.py | https://t.me/theYescoin_bot/Yescoin?startapp=zNqNe6 |  ??? | Login, claim, use boost energy |
-| Spinner Coin      | spinner.py | https://t.me/spinnercoin_bot/app?startapp=r_1331724 |  ??? | Login, spin, upgrade, use boost, open box |
-| Memefi      | memefi.py | https://t.me/memefi_coin_bot?start=r_e152eb67a1 |  ??? | Login, click, re-charge energy (required clean IP) |
-| Hamster Kombat      | hamster.py | https://t.me/hamster_kombat_bot?start=kentId5624258194  |  ??? | claim and boost |
-| CexIO      | cexio.py | https://t.me/cexio_tap_bot?start=1716560687385300 |  ??? | Tap, get farm, get referal, start farm |
-| CellCoin      | cellcoin.py | https://t.me/cellcoin_bot?start=5624258194 |  ??? | Claim, Tap |
-| Blum      | blum.py | https://t.me/BlumCryptoBot/app?startapp=ref_d4nnqd1KUx |  Working | Claim, hacking game (disabled) |
-| HotCoin      | hotgame.py | https://t.me/herewalletbot/app?startapp=4222126 |  ??? | Claim |
-| TimeFarm      | timefarm.py | https://t.me/TimeFarmCryptoBot?start=iW2YPYCj0TkCSyRm |  ??? | Claim, start farm |
-| EggCoin      | coinegg.py | https://t.me/coinegg_miner_bot/miniapp?startapp=kBNoWEHfEAB1yUdYqxB |  ??? | Login, claim egg and usdt |
-| Gemz      | gemz.py | https://t.me/coinegg_miner_bot/miniapp?startapp=kBNoWEHfEAB1yUdYqxB |  ??? | Login, tap, use boost energy |
+- Restructuring CORE
+- Adding GUI
 
 
 ## Features
